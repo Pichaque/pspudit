@@ -38,7 +38,7 @@ Un programa de consola que simula la **primera fase de una auditoría de UDITver
                     │
         ┌───────────┴───────────┐
         ▼                       ▼
-   Bloc de Notas           Calculadora
+       video              Calculadora
 ```
 
 *(Ajusta el esquema y los nombres a lo que hace realmente tu programa.)*
