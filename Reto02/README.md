@@ -42,8 +42,13 @@ Un programa de consola que simula la **primera fase de una auditoría de UDITver
 ```
 
 *(Ajusta el esquema y los nombres a lo que hace realmente tu programa.)*
+<img width="952" height="238" alt="Captura de pantalla 2026-10-08 211320" src="https://github.com/user-attachments/assets/53df1b1d-510d-4cab-9e32-6b3efd08fa4b" />
 
-📸 **Sustituye esto por una captura de tu propia ejecución antes de entregar.**
+En caso de los dos 0:
+<img width="1068" height="907" alt="Captura de pantalla 2026-10-08 211328" src="https://github.com/user-attachments/assets/761e4099-ef7e-4330-8bac-7a5a53771b44" />
+En caso de un 1:
+<img width="1392" height="712" alt="image" src="https://github.com/user-attachments/assets/8c998956-46f3-4abb-8bf2-7fc8215c1c11" />
+
 
 ---
 
