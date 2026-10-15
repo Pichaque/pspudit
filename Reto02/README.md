@@ -38,12 +38,17 @@ Un programa de consola que simula la **primera fase de una auditoría de UDITver
                     │
         ┌───────────┴───────────┐
         ▼                       ▼
-   Bloc de Notas           Calculadora
+       video              Calculadora
 ```
 
 *(Ajusta el esquema y los nombres a lo que hace realmente tu programa.)*
+<img width="952" height="238" alt="Captura de pantalla 2026-10-08 211320" src="https://github.com/user-attachments/assets/53df1b1d-510d-4cab-9e32-6b3efd08fa4b" />
 
-📸 **Sustituye esto por una captura de tu propia ejecución antes de entregar.**
+En caso de los dos 0:
+<img width="1068" height="907" alt="Captura de pantalla 2026-10-08 211328" src="https://github.com/user-attachments/assets/761e4099-ef7e-4330-8bac-7a5a53771b44" />
+En caso de un 1:
+<img width="1392" height="712" alt="image" src="https://github.com/user-attachments/assets/8c998956-46f3-4abb-8bf2-7fc8215c1c11" />
+
 
 ---
 
@@ -190,7 +195,7 @@ Cada vez que te atasques, cambies de idea o algo falle, anota una entrada. Tres 
 
 > Responde de forma clara y **con tus propias palabras**. Estas preguntas serán la base de tu evaluación oral. Las pistas en cursiva son para orientarte, no para copiarlas.
 
-### 1. Secuencial vs paralelo
+### 1️⃣ Secuencial vs paralelo
 
 **¿Qué líneas exactas garantizan que los dos pings se ejecutan a la vez? ¿Qué ocurriría físicamente si pusieras el primer `waitFor()` justo antes de lanzar el segundo `start()`?**
 
@@ -198,7 +203,7 @@ Cada vez que te atasques, cambies de idea o algo falle, anota una entrada. Tres 
 
 *Pistas: ¿qué hace `start()` con el hilo principal de mi programa? ¿Quién ejecuta el ping: mi programa o el sistema operativo? ¿Cuántos procesos existen en ese momento en cada caso? ¿Cuánto tardaría el programa completo?*
 
-### 2. El código de salida (exit code)
+### 2️⃣ El código de salida (exit code)
 
 **¿Qué tipo de dato devuelve `waitFor()`? ¿Qué significa en el estándar de los sistemas operativos que ese valor sea `0` o distinto de `0`?**
 
@@ -206,7 +211,7 @@ Cada vez que te atasques, cambies de idea o algo falle, anota una entrada. Tres 
 
 *Pistas: piensa en "0 = todo fue bien". ¿Por qué crees que el estándar eligió precisamente el 0 para el éxito y deja los demás números libres? ¿Qué información extra pueden aportar los valores distintos de 0? ¿Es lo mismo "el ping falló" que "el programa ping no pudo ejecutarse"?*
 
-### 3. Lógica condicional
+### 3️⃣ Lógica condicional
 
 **Escribe aquí la condición `if` exacta que has programado. Explica por qué has utilizado `&&` o `||` para decidir si abrir el Bloc de Notas o la Calculadora.**
 
@@ -239,6 +244,37 @@ boolean semejanza= (Codsalida1==0 && Codsalida2==0);
 
 *Pistas: `IOException` salta cuando Java **no consigue ni arrancar** el proceso. ¿Qué pasaría si escribo mal el nombre del ejecutable (`notepd.exe`)? ¿Y si ejecuto en un sistema operativo donde ese programa no existe? ¿En qué se diferencia esto de que el ping "falle" y devuelva un código distinto de 0?*
 
+### 5️⃣ Mundo real: sistemas que usan esta lógica
+
+**¿Qué sistemas profesionales utilizan esta lógica de health checks (comprobaciones de estado de servicios)?**
+
+> Esto se usa mucho en empresas para saber si sus servidores están vivos. Algunos ejemplos:
+>
+> | Sistema | Qué hace |
+> |---|---|
+> | **Kubernetes** | Comprueba cada cierto tiempo si un contenedor funciona y, si no responde, lo reinicia. |
+> | **Balanceadores de carga** (AWS, NGINX, HAProxy) | Miran qué servidores responden y solo mandan usuarios a los que están bien. |
+> | **Monitorización** (Nagios, Zabbix, Prometheus) | Hacen comprobaciones y, si algo falla, avisan al administrador por correo o mensaje. Nagios usa códigos de salida parecidos a los míos: 0 es OK y los demás indican problemas. |
+> | **Docker** (`HEALTHCHECK`) | Comprueba si un contenedor está bien. |
+>
+> Todos hacen lo mismo que mi programa: lanzar varias comprobaciones, mirar los códigos de salida y, según cuántas fallen, ejecutar una acción.
+
+---
+
+### 6️⃣ Reflexión sobre los tiempos
+
+**Si auditara 50 servidores lentos, ¿cuánto tardaría el programa de forma secuencial y cuánto en paralelo?**
+
+> En mi programa, los dos pings que fallan tardan 3 segundos cada uno, pero el tiempo total fue de unos **3000 ms** y no 6000 ms, porque se esperan a la vez.
+>
+> Con 50 servidores lentos de 3 segundos cada uno:
+>
+> | Modo | Cálculo | Tiempo |
+> |---|---|---|
+> | 🐌 Secuencial | 50 × 3 s | **150 s** (2 min 30 s) |
+> | 🚀 Paralelo | el más lento | **≈ 3 s** |
+>
+> En paralelo lanzo todos con `start()` seguidos y solo espero al más lento. Tardaría un poquito más por arrancar los 50 procesos, pero muy poco. En secuencial el tiempo crece con cada servidor que añado y en paralelo casi no cambia, por eso es mejor hacerlo en paralelo.
 ---
 
 ## 🛡️ Preparación para la defensa: ¿sabría hacer esto en directo?

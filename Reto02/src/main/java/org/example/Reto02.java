@@ -1,4 +1,4 @@
-package org.example;
+  package org.example;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ public class Reto02 {
         System.out.println("       🛹EJECUCION DE PROCESOS 🛹");
         System.out.println("==============================================");
         try{
+            long inicio = System.currentTimeMillis();
             System.out.println("INICIANDO EJECUCION....");
             System.out.println("           -> Lanzando primer proceso...");
             Process p1= new ProcessBuilder("ping", "-n", "2", "127.0.0.1").start();
@@ -29,6 +30,7 @@ public class Reto02 {
                 ProcessBuilder pb1= new ProcessBuilder("notepad.exe");
                 pb1.start();
             }
+            System.out.println("Tiempo total: " + (System.currentTimeMillis() - inicio + " ms"));
         }catch (IOException e){
             System.out.println("ERROR: no se ha podido lanzar el proceso");
         }catch (InterruptedException e){
